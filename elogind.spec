@@ -40,6 +40,7 @@ BuildRequires: keyutils-libs-devel
 BuildRequires: libmount-devel
 BuildRequires: pam-devel
 BuildRequires: polkit-devel
+BuildRequires: systemd-devel
 BuildRequires: libseccomp-devel
 BuildRequires: libselinux-devel
 BuildRequires: libudev-devel
