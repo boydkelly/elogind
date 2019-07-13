@@ -23,6 +23,7 @@ Conflicts: systemd-services
 BuildRequires: gcc 
 BuildRequires: m4
 BuildRequires: meson
+BuildRequires: libcap-devel
 BuildRequires: ninja-build
 BuildRequires: kexec-tools
 BuildRequires: gperf
