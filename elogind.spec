@@ -24,7 +24,7 @@ BuildRequires: gcc
 BuildRequires: m4
 BuildRequires: cmake
 BuildRequires: meson
-BuildRequires: gettext-libs
+BuildRequires: gettext
 BuildRequires: libcap-devel
 BuildRequires: dbus-devel
 BuildRequires: pam-devel
