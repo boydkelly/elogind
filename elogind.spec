@@ -146,7 +146,7 @@ done
 
 for f in \
 %_bindir/busctl /bin/loginctl \
-%_man1dir/busctl.1 %_man1dir/loginctl.1 %_man5dir/logind.conf.5 \
+%_man1dir/loginctl.1 %_man5dir/logind.conf.5 \
 ;
 do
 n="${f##*/}"
