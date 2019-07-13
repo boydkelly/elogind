@@ -197,7 +197,7 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 %_man7dir/*
 %_man8dir/*
 
-%files -n lib64%name
+%files -n lib%name
 /%_lib/*.so.*
 
 %files -n lib%name-devel
