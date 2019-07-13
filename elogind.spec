@@ -139,12 +139,6 @@ rm -rf -- \
 %buildroot/%_datadir/factory \
 %buildroot/%_datadir/doc
 
-#install -m755 -pD %SOURCE1 %buildroot/lib/%name/elogind-dbus-helper
-#install -m755 -pD %SOURCE2 %buildroot/%_initdir/elogind
-#install -m644 -pD %SOURCE3 %buildroot/%_sysconfdir/sysconfig/elogind
-#install -m755 -pD %SOURCE4 %buildroot/%_controldir/pam_elogind
-#install -m755 -pD %SOURCE5 %buildroot/%_controldir/libelogind-preload
-
 for f in %buildroot/lib/udev/rules.d/*.rules; do
 n="${f##*/}"
 mv -f -- "$f" "${f%%/*}/${n%%%%-*}-elogind-${n#*-}"
@@ -184,12 +178,7 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 
 
 %files -f %name.lang
-#%config(noreplace) %_sysconfdir/%name/logind.conf
-##%config(noreplace) %_sysconfdir/pam.d/elogind-user
-#%config(noreplace) %_sysconfdir/sysconfig/elogind
-#%config %_controldir/pam_elogind
-#%config %_controldir/libelogind-preload
-#%_initdir/elogind
+%_initdir/elogind
 /bin/elogind-inhibit
 /bin/loginctl
 /bin/eloginctl
