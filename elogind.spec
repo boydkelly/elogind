@@ -23,8 +23,7 @@ Conflicts: systemd-services
 BuildRequires: meson
 BuildRequires: ninja-build
 BuildRequires: gperf
-BuildRequires: libxsltinstall_weak_deps
- 
+BuildRequires: libxslt 
 BuildRequires: docbook-xsl
 BuildRequires: libacl-devel
 BuildRequires: audit-libs-devel
