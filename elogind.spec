@@ -20,6 +20,7 @@ Source0:  https://github.com/boydkelly/elogind-fedora-crouton-wayland/archive/%{
 Conflicts: systemd
 Conflicts: systemd-services
 
+BuildRequires: gcc 
 BuildRequires: meson
 BuildRequires: ninja-build
 BuildRequires: gperf
