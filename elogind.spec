@@ -23,16 +23,17 @@ Conflicts: systemd-services
 BuildRequires: meson
 BuildRequires: ninja-build
 BuildRequires: gperf
-BuildRequires: xsltproc
+BuildRequires: libxsltinstall_weak_deps
+ 
 BuildRequires: docbook-xsl
 BuildRequires: libacl-devel
-BuildRequires: libaudit-devel
+BuildRequires: audit-libs-devel
 BuildRequires: libblkid-devel
 BuildRequires: libcap-devel
-BuildRequires: libkeyutils-devel
+BuildRequires: keyutils-libs-devel
 BuildRequires: libmount-devel
-BuildRequires: libpam0-devel
-BuildRequires: libpolkit-devel
+BuildRequires: pam-devel
+BuildRequires: polkit-devel
 BuildRequires: libseccomp-devel
 BuildRequires: libselinux-devel
 BuildRequires: libudev-devel
