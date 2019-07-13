@@ -145,8 +145,7 @@ mv -f -- "$f" "${f%%/*}/${n%%%%-*}-elogind-${n#*-}"
 done
 
 for f in \
-%_bindir/busctl /bin/loginctl \
-%_man1dir/loginctl.1 %_man5dir/logind.conf.5 \
+%_bindir/busctl /bin/loginctl 
 ;
 do
 n="${f##*/}"
