@@ -21,8 +21,10 @@ Conflicts: systemd
 Conflicts: systemd-services
 
 BuildRequires: gcc 
+BuildRequires: m4
 BuildRequires: meson
 BuildRequires: ninja-build
+BuildRequires: kexec-tools
 BuildRequires: gperf
 BuildRequires: libxslt 
 BuildRequires: docbook-xsl
