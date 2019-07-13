@@ -208,7 +208,7 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 %files -n lib%name-devel-static
 /%_lib/*.a
 
-%files -n lib64%name-devel-docs
+%files -n lib%name-devel-docs
 %_man3dir/*
 
 %files -n bash-completion-%name
