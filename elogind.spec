@@ -1,5 +1,6 @@
-%global commit 2a7eaf306d6910c270212b65a2b6a950986d398c
+%global commit 95ddd43cdde907e7439cd7e85bf32837112770d7
 %global shortcommit %(c=%{commit}; echo ${c:0:7}) 
+%global gittag v241.1
 
 Name:     elogind
 Version:  241.1
@@ -7,9 +8,8 @@ Release:  1%{dist}
 Summary:  The systemd project's "logind", extracted to a standalone package
 License:  GPL2, LGPL2.1
 URL:      https://github.com/elogind/elogind
-
-Source0:  https://github.com/boydkelly/elogind-fedora-crouton-wayland/archive/%{commit}/%{name}-%{shortcommit}.tar.gz  
-Source0:  https://github.com/boydkelly/elogind-fedora-crouton-wayland/archive/%{name}-%{version}.tar.gz  
+ 
+Source0:  https://github.com/elogind/elogind/archive/%{gittag}/%{name}-%{version}.tar.gz  
 
 BuildRequires: git 
 BuildRequires: gcc 
@@ -136,5 +136,5 @@ Bash completion for %name.
 /%_datadir/bash-completion/completions/*
 
 %changelog
-* Sun July 14 2019 Boyd Kelly <bkelly@coastsystems.net>
-- Initial version of elogind for Fedora and fedora-crouton-wayland
+* Sun July 14 2019 Boyd Kelly <bkelly@coastsystems.net> - 241.1
+- Initial version of elogind for Fedora and fedora-crouton-wayland 
