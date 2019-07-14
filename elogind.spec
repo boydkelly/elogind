@@ -9,6 +9,7 @@ License:  GPL2, LGPL2.1
 URL:      https://github.com/elogind/elogind
 
 Source0:  https://github.com/boydkelly/elogind-fedora-crouton-wayland/archive/%{commit}/%{name}-%{shortcommit}.tar.gz  
+Source0:  https://github.com/boydkelly/elogind-fedora-crouton-wayland/archive/%{name}-%{version}.tar.gz  
 
 BuildRequires: git 
 BuildRequires: gcc 
