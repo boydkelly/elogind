@@ -127,6 +127,7 @@ Bash completion for %name.
 -Dstatic-libelogind=pic \
 -Dtests=false \
 #
+
 %meson_build
 
 %install
@@ -145,9 +146,7 @@ mv -f -- "$f" "${f%%/*}/${n%%%%-*}-elogind-${n#*-}"
 done
 
 for f in \
-%_bindir/busctl /bin/loginctl 
-;
-do
+%_bindir/busctl /bin/loginctl; do 
 n="${f##*/}"
 d="${f%%/*}"
 
@@ -165,16 +164,12 @@ complete -F _loginctl eloginctl' \
 %buildroot/%_datadir/bash-completion/completions/loginctl
 ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 
-
-%pre
 %pre_control pam_elogind
 %pre_control libelogind-preload
-
 
 %post
 %post_control -s enabled pam_elogind
 %post_control -s enabled libelogind-preload
-
 
 %files -f %name.lang
 %_initdir/elogind
