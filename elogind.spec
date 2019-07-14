@@ -72,7 +72,7 @@ Bash completion for %name.
 
 %prep
 
-%autosetup -n elogind-fedora-crouton-wayland-%{commit}
+%autosetup 
 
 %build
 %meson \
