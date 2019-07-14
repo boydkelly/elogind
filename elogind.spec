@@ -149,9 +149,7 @@ done
 
 for f in \
 %_bindir/busctl /bin/loginctl \
-%_man1dir/busctl.1 %_man1dir/loginctl.1 %_man5dir/logind.conf.5 \
-;
-do
+%_mandir/busctl.1 %_mandir/loginctl.1 %_mandir/logind.conf.5; do
 n="${f##*/}"
 d="${f%%/*}"
 
@@ -184,10 +182,7 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 %_datadir/dbus-1/system-services/org.freedesktop.login1.service
 %_datadir/dbus-1/system.d/org.freedesktop.login1.conf
 %_datadir/polkit-1/actions/org.freedesktop.login1.policy
-%_man1dir/*
-%_man5dir/*
-%_man7dir/*
-%_man8dir/*
+%_mandir/*
 
 %files -n lib%name
 /%_lib/*.so.*
@@ -201,7 +196,7 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 /%_lib/*.a
 
 %files -n lib%name-devel-docs
-%_man3dir/*
+%_mandir/*
 
 %files -n bash-completion-%name
 %_datadir/bash-completion/completions/*
