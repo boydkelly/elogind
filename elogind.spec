@@ -57,7 +57,6 @@ This library provides access to %name session management.
 
 %package -n lib%name-devel
 Summary:  Development libraries for elogind
-Obsoletes: elogind-devel
 Provides:  elogind-devel = %version-%release
 %description -n lib%name-devel
 Header and Library files for doing development with the elogind.
@@ -74,7 +73,6 @@ Bash completion for %name.
 %prep
 
 %autosetup -n elogind-fedora-crouton-wayland-%{commit}
-##-Drootlibdir=/%_libdir \
 
 %build
 %meson \
@@ -136,5 +134,5 @@ Bash completion for %name.
 /%_datadir/bash-completion/completions/*
 
 %changelog
-* Sun July 14 2019 Boyd Kelly <bkelly@coastsystems.net> - 241.1
+* Sun Jul 14 2019 Boyd Kelly <bkelly@coastsystems.net> - 241.1
 - Initial version of elogind for Fedora and fedora-crouton-wayland 
