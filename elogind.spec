@@ -164,18 +164,13 @@ complete -F _loginctl eloginctl' \
 %buildroot/%_datadir/bash-completion/completions/loginctl
 ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 
-#%pre_control pam_elogind
-#%pre_control libelogind-preload
-
 %post
-#%post_control -s enabled pam_elogind
-#%post_control -s enabled libelogind-preload
 
 %files -f %name.lang
 %_initdir/elogind
-/bin/elogind-inhibit
-/bin/loginctl
-/bin/eloginctl
+%_bindir/elogind-inhibit
+%_bindir/loginctl
+%_bindir/eloginctl
 %_bindir/busctl
 %_bindir/ebusctl
 /lib64/%name
@@ -184,10 +179,6 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 %_datadir/dbus-1/system-services/org.freedesktop.login1.service
 %_datadir/dbus-1/system.d/org.freedesktop.login1.conf
 %_datadir/polkit-1/actions/org.freedesktop.login1.policy
-%_man1dir/*
-%_man5dir/*
-%_man7dir/*
-%_man8dir/*
 
 %files -n lib%name
 /%_lib/*.so.*
