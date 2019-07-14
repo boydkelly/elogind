@@ -164,12 +164,12 @@ complete -F _loginctl eloginctl' \
 %buildroot/%_datadir/bash-completion/completions/loginctl
 ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 
-%pre_control pam_elogind
-%pre_control libelogind-preload
+#%pre_control pam_elogind
+#%pre_control libelogind-preload
 
 %post
-%post_control -s enabled pam_elogind
-%post_control -s enabled libelogind-preload
+#%post_control -s enabled pam_elogind
+#%post_control -s enabled libelogind-preload
 
 %files -f %name.lang
 %_initdir/elogind
