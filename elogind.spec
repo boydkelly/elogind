@@ -2,10 +2,9 @@
 %global shortcommit %(c=%{commit}; echo ${c:0:7}) 
 
 Name:     elogind
-Version:  241
-Release:  1 
+Version:  241.1
+Release:  1%{dist} 
 Summary:  The systemd project's "logind", extracted to a standalone package
-Group:    System/Configuration/Boot and Init
 License:  GPL2, LGPL2.1
 URL:      https://github.com/elogind/elogind
 Packager: Boyd Kelly 
