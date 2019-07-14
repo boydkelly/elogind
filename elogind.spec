@@ -1,50 +1,41 @@
-%global commit 2a7eaf306d6910c270212b65a2b6a950986d398c
-%global shortcommit %(c=%{commit}; echo ${c:0:7}) 
-
 Name:     elogind
-Version:  241
-Release:  1 
+Version:  239.3
+Release:  alt3
 Summary:  The systemd project's "logind", extracted to a standalone package
 Group:    System/Configuration/Boot and Init
 License:  GPL2, LGPL2.1
 URL:      https://github.com/elogind/elogind
-Packager: Boyd Kelly 
+Packager: Alexey Gladkov <legion at altlinux.ru>
 
-Source0:  https://github.com/boydkelly/elogind-fedora-crouton-wayland/archive/%{commit}/%{name}-%{shortcommit}.tar.gz  
-#Source1: elogind-dbus-helper
-#Source2: elogind.init
-#Source3: elogind.sysconfig
-#Source4: pam_elogind.control
-#Source5: libelogind-preload.control
+Source0: %name-%version.tar
+Source1: elogind-dbus-helper
+Source2: elogind.init
+Source3: elogind.sysconfig
+Source4: pam_elogind.control
+Source5: libelogind-preload.control
 
+Patch0: elogind-fix-stale-pidfile.patch
+Patch1: elogind-dbus-activation-helper.patch
+Patch2: elogind-create-run-systemd-system.patch
+
+Conflicts: ConsoleKit2
+Conflicts: ConsoleKit2-x11
 Conflicts: systemd
 Conflicts: systemd-services
 
-BuildRequires: gcc 
-BuildRequires: m4
-BuildRequires: cmake
 BuildRequires: meson
-BuildRequires: gettext
-BuildRequires: libcap-devel
-BuildRequires: dbus-devel
-BuildRequires: pam-devel
-BuildRequires: glib2-devel
-BuildRequires: pcre2-devel
 BuildRequires: ninja-build
-BuildRequires: kexec-tools
 BuildRequires: gperf
-BuildRequires: libxslt-devel 
-BuildRequires: docbook-style-xsl
+BuildRequires: xsltproc
+BuildRequires: docbook-xsl
 BuildRequires: libacl-devel
-BuildRequires: polkit-devel
-BuildRequires: libacl-devel
-BuildRequires: audit-libs-devel
+BuildRequires: libaudit-devel
 BuildRequires: libblkid-devel
 BuildRequires: libcap-devel
-BuildRequires: keyutils-libs-devel
+BuildRequires: libkeyutils-devel
 BuildRequires: libmount-devel
-BuildRequires: pam-devel
-BuildRequires: systemd-devel
+BuildRequires: libpam0-devel
+BuildRequires: libpolkit-devel
 BuildRequires: libseccomp-devel
 BuildRequires: libselinux-devel
 BuildRequires: libudev-devel
@@ -103,8 +94,13 @@ Requires: %name = %version-%release
 %description -n bash-completion-%name
 Bash completion for %name.
 
+
 %prep
 %setup
+%patch0 -p1
+%patch1 -p1
+#patch2 -p1
+
 
 %build
 %meson \
@@ -130,7 +126,6 @@ Bash completion for %name.
 -Dstatic-libelogind=pic \
 -Dtests=false \
 #
-
 %meson_build
 
 %install
@@ -143,13 +138,25 @@ rm -rf -- \
 %buildroot/%_datadir/factory \
 %buildroot/%_datadir/doc
 
+# rule in the udev-rules
+rm -f -- %buildroot/lib/udev/rules.d/70-power-switch.rules
+
+install -m755 -pD %SOURCE1 %buildroot/lib/%name/elogind-dbus-helper
+install -m755 -pD %SOURCE2 %buildroot/%_initdir/elogind
+install -m644 -pD %SOURCE3 %buildroot/%_sysconfdir/sysconfig/elogind
+install -m755 -pD %SOURCE4 %buildroot/%_controldir/pam_elogind
+install -m755 -pD %SOURCE5 %buildroot/%_controldir/libelogind-preload
+
 for f in %buildroot/lib/udev/rules.d/*.rules; do
 n="${f##*/}"
 mv -f -- "$f" "${f%%/*}/${n%%%%-*}-elogind-${n#*-}"
 done
 
 for f in \
-%_bindir/busctl /bin/loginctl; do 
+%_bindir/busctl /bin/loginctl \
+%_man1dir/busctl.1 %_man1dir/loginctl.1 %_man5dir/logind.conf.5 \
+;
+do
 n="${f##*/}"
 d="${f%%/*}"
 
@@ -167,13 +174,27 @@ complete -F _loginctl eloginctl' \
 %buildroot/%_datadir/bash-completion/completions/loginctl
 ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 
+
+%pre
+%pre_control pam_elogind
+%pre_control libelogind-preload
+
+
 %post
+%post_control -s enabled pam_elogind
+%post_control -s enabled libelogind-preload
+
 
 %files -f %name.lang
+%config(noreplace) %_sysconfdir/%name/logind.conf
+%config(noreplace) %_sysconfdir/pam.d/elogind-user
+%config(noreplace) %_sysconfdir/sysconfig/elogind
+%config %_controldir/pam_elogind
+%config %_controldir/libelogind-preload
 %_initdir/elogind
-%_bindir/elogind-inhibit
-%_bindir/loginctl
-%_bindir/eloginctl
+/bin/elogind-inhibit
+/bin/loginctl
+/bin/eloginctl
 %_bindir/busctl
 %_bindir/ebusctl
 /lib/%name
@@ -182,6 +203,10 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 %_datadir/dbus-1/system-services/org.freedesktop.login1.service
 %_datadir/dbus-1/system.d/org.freedesktop.login1.conf
 %_datadir/polkit-1/actions/org.freedesktop.login1.policy
+%_man1dir/*
+%_man5dir/*
+%_man7dir/*
+%_man8dir/*
 
 %files -n lib%name
 /%_lib/*.so.*
@@ -201,3 +226,4 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 %_datadir/bash-completion/completions/*
 
 %changelog
+
