@@ -148,8 +148,7 @@ mv -f -- "$f" "${f%%/*}/${n%%%%-*}-elogind-${n#*-}"
 done
 
 for f in \
-%_bindir/busctl /bin/loginctl \
-%_mandir/busctl.1 %_mandir/loginctl.1 %_mandir/logind.conf.5; do
+%_bindir/busctl /bin/loginctl; do
 n="${f##*/}"
 d="${f%%/*}"
 
