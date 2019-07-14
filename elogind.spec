@@ -173,7 +173,7 @@ ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
 %_bindir/eloginctl
 %_bindir/busctl
 %_bindir/ebusctl
-/lib64/%name
+/lib/%name
 /lib/udev/rules.d/*.rules
 /%_lib/security/pam_elogind.so
 %_datadir/dbus-1/system-services/org.freedesktop.login1.service
