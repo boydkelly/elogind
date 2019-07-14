@@ -7,18 +7,10 @@ Release:  1%{dist}
 Summary:  The systemd project's "logind", extracted to a standalone package
 License:  GPL2, LGPL2.1
 URL:      https://github.com/elogind/elogind
-Packager: Boyd Kelly 
 
 Source0:  https://github.com/boydkelly/elogind-fedora-crouton-wayland/archive/%{commit}/%{name}-%{shortcommit}.tar.gz  
-#Source1: elogind-dbus-helper
-#Source2: elogind.init
-#Source3: elogind.sysconfig
-#Source4: pam_elogind.control
-#Source5: libelogind-preload.control
 
-Conflicts: systemd
-Conflicts: systemd-services
-
+BuildRequires: git 
 BuildRequires: gcc 
 BuildRequires: m4
 BuildRequires: cmake
@@ -27,6 +19,7 @@ BuildRequires: gettext
 BuildRequires: libcap-devel
 BuildRequires: dbus-devel
 BuildRequires: pam-devel
+BuildRequires: glib2
 BuildRequires: glib2-devel
 BuildRequires: pcre2-devel
 BuildRequires: ninja-build
@@ -58,43 +51,18 @@ graphically, on the console, or remotely.
 
 %package -n lib%name
 Summary:  The %name library
-Group:    System/Libraries
-
 %description -n lib%name
 This library provides access to %name session management.
 
 %package -n lib%name-devel
 Summary:  Development libraries for elogind
-Group:    Development/C
-
 Obsoletes: elogind-devel
 Provides:  elogind-devel = %version-%release
-
 %description -n lib%name-devel
 Header and Library files for doing development with the elogind.
 
-%package -n lib%name-devel-docs
-Summary:  Development documentation for elogind
-Group:    Development/C
-
-Conflicts: libsystemd-devel
-
-%description -n lib%name-devel-docs
-Development documentation for elogind.
-
-%package -n lib%name-devel-static
-Summary:  Development static libraries for elogind
-Group:    Development/C
-
-Obsoletes: elogind-devel-static
-Provides:  elogind-devel-static = %version-%release
-
-%description -n lib%name-devel-static
-Header and Static Library files for doing development with the elogind.
-
 %package -n bash-completion-%name
 Summary: Bash completion for %name utils
-Group: Shells
 BuildArch: noarch
 Requires: bash-completion
 Requires: %name = %version-%release
@@ -103,19 +71,20 @@ Requires: %name = %version-%release
 Bash completion for %name.
 
 %prep
-%setup
+
+%autosetup -n elogind-fedora-crouton-wayland-%{commit}
+##-Drootlibdir=/%_libdir \
 
 %build
 %meson \
--Drootlibdir=/%_lib \
--Dpamlibdir=/%_lib/security \
+-Dpamlibdir=/%_libdir/security \
 -Dcgroup-controller=%name \
 -Ddefault-hierarchy=hybrid \
 -Ddefault-kill-user-processes=false \
 -Dtty-gid=5 \
 -Dsystem-uid-max=499 \
 -Dsystem-gid-max=499 \
--Dsplit-usr=true \
+-Dsplit-usr=auto \
 -Dman=true \
 -Dutmp=true \
 -Dpolkit=true \
@@ -124,11 +93,8 @@ Bash completion for %name.
 -Dpam=true \
 -Dselinux=true \
 -Dsmack=true \
--Dhalt-path=/sbin/halt \
--Dreboot-path=/sbin/reboot \
 -Dstatic-libelogind=pic \
 -Dtests=false \
-#
 
 %meson_build
 
@@ -137,67 +103,37 @@ Bash completion for %name.
 
 %find_lang %name
 
-rm -rf -- \
-%buildroot/%_datadir/zsh \
-%buildroot/%_datadir/factory \
-%buildroot/%_datadir/doc
-
-for f in %buildroot/lib/udev/rules.d/*.rules; do
-n="${f##*/}"
-mv -f -- "$f" "${f%%/*}/${n%%%%-*}-elogind-${n#*-}"
-done
-
-for f in \
-%_bindir/busctl /bin/loginctl; do
-n="${f##*/}"
-d="${f%%/*}"
-
-mv -f -- "%buildroot/$f" "%buildroot/$d/e$n"
-ln -s -- "e$n" "%buildroot/$f"
-
-sed -i \
--e "s#/$n#/e$n#g" \
-%buildroot/lib/udev/rules.d/*.rules
-done
-
-sed -i \
--e '/^complete -F _loginctl loginctl/a \
-complete -F _loginctl eloginctl' \
-%buildroot/%_datadir/bash-completion/completions/loginctl
-ln -s loginctl %buildroot/%_datadir/bash-completion/completions/eloginctl
-
 %post
 
 %files -f %name.lang
-%_initdir/elogind
-/bin/elogind-inhibit
-/bin/loginctl
-/bin/eloginctl
-%_bindir/busctl
-%_bindir/ebusctl
-/lib/%name
-/lib/udev/rules.d/*.rules
-/%_lib/security/pam_elogind.so
-%_datadir/dbus-1/system-services/org.freedesktop.login1.service
-%_datadir/dbus-1/system.d/org.freedesktop.login1.conf
-%_datadir/polkit-1/actions/org.freedesktop.login1.policy
-%_mandir/*
+/%_bindir/*
+/%_libdir/lib%{name}.so.*
+/%_libdir/libelogind.a
+/%_prefix/lib/elogind/*
+/%_prefix/lib/udev/rules.d/*.rules
+/%_libdir/security/pam_elogind.so
+/%{_sysconfdir}/pam.d/*
+/%{_sysconfdir}/elogind/*
+/%_datadir/dbus-1/system-services/org.freedesktop.login1.service
+/%_datadir/dbus-1/system.d/org.freedesktop.login1.conf
+/%_datadir/polkit-1/actions/org.freedesktop.login1.policy
+/%_datadir/factory/etc/pam.d/*
+/%_datadir/zsh/*
+/%_mandir/*
+/%_docdir/*
 
 %files -n lib%name
-/%_lib/*.so.*
+/%_libdir/*.so.*
 
 %files -n lib%name-devel
-%_includedir/%name
-/%_lib/*.so
-%_pkgconfigdir/libelogind.pc
-
-%files -n lib%name-devel-static
-/%_lib/*.a
-
-%files -n lib%name-devel-docs
-%_mandir/*
+/%_includedir/%name
+/%_libdir/*.so
+/%_libdir/pkgconfig/libelogind.pc
+/%_mandir/*
 
 %files -n bash-completion-%name
-%_datadir/bash-completion/completions/*
+/%_datadir/bash-completion/completions/*
 
 %changelog
+* Sun July 14 2019 Boyd Kelly <bkelly@coastsystems.net>
+- Initial version of elogind for Fedora and fedora-crouton-wayland
