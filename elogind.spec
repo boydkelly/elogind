@@ -1,9 +1,9 @@
 %global commit 95ddd43cdde907e7439cd7e85bf32837112770d7
 %global shortcommit %(c=%{commit}; echo ${c:0:7}) 
-%global gittag v241.1
+%global gittag v246.0-rc-2
 
 Name:     elogind
-Version:  241.1
+Version:  246.0
 Release:  1%{dist} 
 Summary:  The systemd project's "logind", extracted to a standalone package
 License:  GPL2, LGPL2.1
@@ -134,5 +134,7 @@ Bash completion for %name.
 /%_datadir/bash-completion/completions/*
 
 %changelog
+* Mon Dec 11 2020 Boyd Kelly <bkelly@coastsystems.net> - 246.0
+- Rebase to 246.0 
 * Sun Jul 14 2019 Boyd Kelly <bkelly@coastsystems.net> - 241.1
 - Initial version of elogind for Fedora and fedora-crouton-wayland 
