@@ -134,7 +134,7 @@ Bash completion for %name.
 /%_datadir/bash-completion/completions/*
 
 %changelog
-* Mon Dec 11 2020 Boyd Kelly <bkelly@coastsystems.net> - 246.0
+* Fri Dec 11 2020 Boyd Kelly <bkelly@coastsystems.net> - 246.0
 - Rebase to 246.0 
 * Sun Jul 14 2019 Boyd Kelly <bkelly@coastsystems.net> - 241.1
 - Initial version of elogind for Fedora and fedora-crouton-wayland 
